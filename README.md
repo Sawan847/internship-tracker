@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🧾 Internship Application Tracker
 
 > **Django Frontend + Flask REST API + In-Memory Storage (No Database)**
@@ -247,3 +248,6 @@ Applied  ──►  Under Review  ──►  Selected  (terminal)
 ---
 
 *Built with Python 3 · Django 5 · Flask 3 · Bootstrap 5*
+=======
+# internship-tracker
+>>>>>>> 317c243b8d276c3bd1a66b067fd7924f245feba1
