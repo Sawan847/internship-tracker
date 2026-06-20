@@ -1,0 +1,126 @@
+{% extends "django_frontend/base.html" %}
+{% block title %}InternTrack — Find Your Future{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+<section style="padding: 80px 0 60px;">
+  <div class="container text-center">
+    <div class="mb-4">
+      <span class="status-badge badge-Selected" style="font-size: 0.8rem;">
+        <i class="bi bi-lightning-fill"></i> Django + Flask Architecture
+      </span>
+    </div>
+    <h1 class="gradient-text mb-4" style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;">
+      Track Every Internship<br>Application in One Place
+    </h1>
+    <p class="mx-auto mb-5" style="max-width: 540px; color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
+      Submit applications, follow their journey from <em>Applied</em> to <em>Selected</em>,
+      and manage every status update — all powered by a Flask REST API backend.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'apply' %}" class="btn btn-brand btn-lg px-5">
+        <i class="bi bi-send me-2"></i>Apply for Internship
+      </a>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-brand btn-lg px-5">
+        <i class="bi bi-grid me-2"></i>View Dashboard
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Live Stats ─────────────────────────────────────────────────────────── -->
+{% if stats %}
+<section class="container mb-5">
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <div class="stat-card text-center">
+        <div class="glow-ring glow-indigo mx-auto mb-3"><i class="bi bi-collection"></i></div>
+        <div class="stat-number gradient-text">{{ stats.total }}</div>
+        <div style="color: var(--text-muted); font-size: 0.82rem; font-weight: 500; margin-top: 4px;">Total Applications</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card text-center">
+        <div class="glow-ring glow-amber mx-auto mb-3"><i class="bi bi-hourglass-split"></i></div>
+        <div class="stat-number" style="color: #FCD34D;">{{ stats.by_status.Applied|default:0 }}</div>
+        <div style="color: var(--text-muted); font-size: 0.82rem; font-weight: 500; margin-top: 4px;">Applied</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card text-center">
+        <div class="glow-ring glow-green mx-auto mb-3"><i class="bi bi-trophy"></i></div>
+        <div class="stat-number" style="color: #34D399;">{{ stats.by_status.Selected|default:0 }}</div>
+        <div style="color: var(--text-muted); font-size: 0.82rem; font-weight: 500; margin-top: 4px;">Selected</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="stat-card text-center">
+        <div class="glow-ring glow-red mx-auto mb-3"><i class="bi bi-x-circle"></i></div>
+        <div class="stat-number" style="color: #FCA5A5;">{{ stats.by_status.Rejected|default:0 }}</div>
+        <div style="color: var(--text-muted); font-size: 0.82rem; font-weight: 500; margin-top: 4px;">Rejected</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── How It Works ───────────────────────────────────────────────────────── -->
+<section class="container mb-5">
+  <div class="card-dark p-4 p-md-5">
+    <h2 class="mb-4 text-center" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.6rem;">
+      How It Works
+    </h2>
+    <div class="row g-4">
+      {% for step in "1234" %}{% endfor %}
+      <div class="col-md-3 text-center">
+        <div class="glow-ring glow-indigo mx-auto mb-3" style="width:52px;height:52px;font-size:1.4rem;border-radius:16px;">
+          <i class="bi bi-pencil-square"></i>
+        </div>
+        <h6 class="fw-600 mb-1">Fill the Form</h6>
+        <p style="color: var(--text-muted); font-size: 0.83rem;">Enter your name, email, college, skills and the role you're applying for.</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="glow-ring glow-cyan mx-auto mb-3" style="width:52px;height:52px;font-size:1.4rem;border-radius:16px;">
+          <i class="bi bi-arrow-right-circle"></i>
+        </div>
+        <h6 class="fw-600 mb-1">Django → Flask</h6>
+        <p style="color: var(--text-muted); font-size: 0.83rem;">Django sends your data to the Flask REST API via HTTP POST request.</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="glow-ring glow-amber mx-auto mb-3" style="width:52px;height:52px;font-size:1.4rem;border-radius:16px;">
+          <i class="bi bi-server"></i>
+        </div>
+        <h6 class="fw-600 mb-1">Flask Stores & Validates</h6>
+        <p style="color: var(--text-muted); font-size: 0.83rem;">Flask validates the data and stores it in Python's in-memory list (no DB).</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <div class="glow-ring glow-green mx-auto mb-3" style="width:52px;height:52px;font-size:1.4rem;border-radius:16px;">
+          <i class="bi bi-bar-chart"></i>
+        </div>
+        <h6 class="fw-600 mb-1">Track on Dashboard</h6>
+        <p style="color: var(--text-muted); font-size: 0.83rem;">View all applications with live status — Applied → Under Review → Selected/Rejected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Status Flow ─────────────────────────────────────────────────────────── -->
+<section class="container mb-5">
+  <div class="card-dark-2 p-4">
+    <h6 class="text-center mb-4" style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 600;">Status Transition Flow</h6>
+    <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+      <span class="status-badge badge-Applied"><i class="bi bi-circle-fill" style="font-size:6px"></i>Applied</span>
+      <i class="bi bi-arrow-right" style="color: var(--text-muted)"></i>
+      <span class="status-badge badge-Under-Review"><i class="bi bi-circle-fill" style="font-size:6px"></i>Under Review</span>
+      <i class="bi bi-arrow-right" style="color: var(--text-muted)"></i>
+      <div class="d-flex flex-column gap-2 align-items-center">
+        <span class="status-badge badge-Selected"><i class="bi bi-circle-fill" style="font-size:6px"></i>Selected</span>
+        <span class="status-badge badge-Rejected"><i class="bi bi-circle-fill" style="font-size:6px"></i>Rejected</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

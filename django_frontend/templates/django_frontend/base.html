@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}InternTrack{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --brand-primary:   #4F46E5;   /* indigo */
+      --brand-secondary: #7C3AED;   /* violet */
+      --brand-accent:    #06B6D4;   /* cyan */
+      --bg-dark:         #0F0F1A;
+      --bg-card:         #1A1A2E;
+      --bg-card-2:       #16213E;
+      --text-main:       #E2E8F0;
+      --text-muted:      #94A3B8;
+      --border:          rgba(255,255,255,0.08);
+      --radius:          14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: rgba(15, 15, 26, 0.95) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .navbar-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-main) !important;
+      letter-spacing: -0.02em;
+    }
+    .navbar-brand span { color: var(--brand-accent); }
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 6px 14px !important;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main) !important;
+      background: rgba(79,70,229,0.15);
+    }
+    .btn-nav-cta {
+      background: var(--brand-primary);
+      color: #fff !important;
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 6px 18px !important;
+      font-size: 0.875rem;
+    }
+    .btn-nav-cta:hover { background: var(--brand-secondary); }
+
+    /* ── Cards ── */
+    .card-dark {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .card-dark-2 {
+      background: var(--bg-card-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    /* ── Gradient text ── */
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, var(--brand-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Buttons ── */
+    .btn-brand {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 10px 24px;
+      transition: all 0.2s;
+      font-size: 0.925rem;
+    }
+    .btn-brand:hover { opacity: 0.88; color: #fff; transform: translateY(-1px); }
+
+    .btn-outline-brand {
+      border: 1.5px solid var(--brand-primary);
+      color: var(--brand-primary);
+      background: transparent;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 9px 22px;
+      transition: all 0.2s;
+      font-size: 0.925rem;
+    }
+    .btn-outline-brand:hover {
+      background: var(--brand-primary);
+      color: #fff;
+    }
+
+    /* ── Status badges ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .badge-Applied      { background: rgba(99,102,241,0.15); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); }
+    .badge-Under-Review { background: rgba(245,158,11,0.15); color: #FCD34D; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-Selected     { background: rgba(16,185,129,0.15); color: #34D399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-Rejected     { background: rgba(239,68,68,0.15);  color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+
+    /* ── Form controls ── */
+    .form-control-dark, .form-select-dark {
+      background: rgba(255,255,255,0.05) !important;
+      border: 1.5px solid var(--border) !important;
+      border-radius: 10px !important;
+      color: var(--text-main) !important;
+      padding: 10px 14px !important;
+      font-size: 0.925rem;
+      transition: border-color 0.2s;
+    }
+    .form-control-dark::placeholder { color: var(--text-muted); }
+    .form-control-dark:focus, .form-select-dark:focus {
+      border-color: var(--brand-primary) !important;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.15) !important;
+      outline: none !important;
+      background: rgba(79,70,229,0.05) !important;
+    }
+    .form-select-dark option { background: #1A1A2E; color: var(--text-main); }
+    .form-label { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; }
+
+    /* ── Alert overrides ── */
+    .alert-dark-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34D399; }
+    .alert-dark-danger  { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #FCA5A5; }
+    .alert-dark-info    { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.3);  color: #67E8F9; }
+
+    /* ── Stat cards ── */
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); border-color: rgba(79,70,229,0.4); }
+    .stat-number { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
+
+    /* ── Application row ── */
+    .app-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      transition: all 0.2s;
+    }
+    .app-row:hover { border-color: rgba(79,70,229,0.4); transform: translateX(3px); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 24px 0;
+      margin-top: 60px;
+      text-align: center;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 3px; }
+
+    /* ── Glow ring ── */
+    .glow-ring {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .glow-indigo { background: rgba(79,70,229,0.15); color: #818CF8; }
+    .glow-amber  { background: rgba(245,158,11,0.15); color: #FCD34D; }
+    .glow-green  { background: rgba(16,185,129,0.15); color: #34D399; }
+    .glow-red    { background: rgba(239,68,68,0.15);  color: #FCA5A5; }
+    .glow-cyan   { background: rgba(6,182,212,0.15);  color: #67E8F9; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <i class="bi bi-briefcase-fill me-2" style="color: var(--brand-accent)"></i>Intern<span>Track</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <i class="bi bi-list text-light fs-4"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link {% block nav_home %}{% endblock %}" href="{% url 'home' %}"><i class="bi bi-house me-1"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link {% block nav_dash %}{% endblock %}" href="{% url 'dashboard' %}"><i class="bi bi-grid me-1"></i>Dashboard</a></li>
+        <li class="nav-item ms-2"><a class="nav-link btn-nav-cta" href="{% url 'apply' %}"><i class="bi bi-plus-circle me-1"></i>Apply Now</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Flash Messages ──────────────────────────────────────────────────────── -->
+<div class="container mt-3">
+  {% for msg in messages %}
+    <div class="alert rounded-3 border-0 d-flex align-items-center gap-2
+      {% if msg.tags == 'success' %}alert-dark-success
+      {% elif msg.tags == 'error' %}alert-dark-danger
+      {% else %}alert-dark-info{% endif %}"
+      role="alert">
+      <i class="bi {% if msg.tags == 'success' %}bi-check-circle{% elif msg.tags == 'error' %}bi-exclamation-triangle{% else %}bi-info-circle{% endif %}"></i>
+      {{ msg }}
+    </div>
+  {% endfor %}
+</div>
+
+<!-- ── Page Content ────────────────────────────────────────────────────────── -->
+<main>{% block content %}{% endblock %}</main>
+
+<footer>
+  <div class="container">
+    <span style="color: var(--brand-accent)"><i class="bi bi-briefcase-fill"></i></span>
+    InternTrack &nbsp;·&nbsp; Django Frontend + Flask API &nbsp;·&nbsp; In-Memory Storage &nbsp;·&nbsp; No Database
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

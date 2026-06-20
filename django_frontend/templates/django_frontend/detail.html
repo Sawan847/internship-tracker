@@ -1,0 +1,134 @@
+{% extends "django_frontend/base.html" %}
+{% load custom_filters %}
+{% block title %}Application #{{ application.id }} — InternTrack{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 720px; padding: 50px 16px;">
+
+  <!-- Back -->
+  <a href="{% url 'dashboard' %}" style="color: var(--text-muted); font-size: 0.875rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 28px;">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+  </a>
+
+  <!-- Header Card -->
+  <div class="card-dark p-4 p-md-5 mb-4">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+      <div>
+        <div style="color: var(--text-muted); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">
+          Application #{{ application.id }}
+        </div>
+        <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size: 1.8rem; letter-spacing: -0.02em; margin: 0;">
+          {{ application.name }}
+        </h1>
+      </div>
+      <span class="status-badge badge-{{ application.status|cut:' ' }}" style="font-size: 0.85rem; padding: 7px 16px;">
+        <i class="bi bi-circle-fill" style="font-size:7px;"></i>
+        {{ application.status }}
+      </span>
+    </div>
+
+    <!-- Details Grid -->
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card-dark-2 p-3 h-100">
+          <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">
+            <i class="bi bi-envelope me-1"></i>Email
+          </div>
+          <div style="font-weight: 500;">{{ application.email }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-dark-2 p-3 h-100">
+          <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">
+            <i class="bi bi-building me-1"></i>College
+          </div>
+          <div style="font-weight: 500;">{{ application.college }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-dark-2 p-3 h-100">
+          <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">
+            <i class="bi bi-briefcase me-1"></i>Role Applied For
+          </div>
+          <div style="font-weight: 600; color: var(--brand-accent);">{{ application.role }}</div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-dark-2 p-3 h-100">
+          <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">
+            <i class="bi bi-calendar3 me-1"></i>Applied On
+          </div>
+          <div style="font-weight: 500;">{{ application.applied_at }}</div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card-dark-2 p-3">
+          <div style="color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
+            <i class="bi bi-tools me-1"></i>Skills
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+              {% for skill in application.skills|split_skills %}
+                <span style="background: rgba(79,70,229,0.12); color: #818CF8; font-size: 0.8rem; padding: 4px 12px; border-radius: 8px; border: 1px solid rgba(79,70,229,0.2);">{{ skill }}</span>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Update Card -->
+  {% if allowed_next %}
+  <div class="card-dark p-4 mb-4">
+    <h6 style="font-weight: 600; margin-bottom: 4px;"><i class="bi bi-arrow-repeat me-2" style="color: var(--brand-accent);"></i>Update Status</h6>
+    <p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 20px;">
+      Current status: <strong style="color: var(--text-main);">{{ application.status }}</strong>.
+      Move it forward by choosing a next stage.
+    </p>
+    <form method="POST" action="{% url 'update_status' %}">
+      {% csrf_token %}
+      <input type="hidden" name="app_id" value="{{ application.id }}" />
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <select name="status" class="form-control form-select-dark" style="max-width: 240px;">
+          {% for s in allowed_next %}
+            <option value="{{ s }}">{{ s }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-brand">
+          <i class="bi bi-check2-circle me-2"></i>Update Status
+        </button>
+      </div>
+    </form>
+  </div>
+  {% else %}
+  <div class="card-dark-2 p-4 mb-4 d-flex align-items-center gap-3">
+    <div class="glow-ring {% if application.status == 'Selected' %}glow-green{% else %}glow-red{% endif %}"
+         style="width:44px;height:44px;font-size:1.1rem;flex-shrink:0;">
+      <i class="bi {% if application.status == 'Selected' %}bi-trophy-fill{% else %}bi-x-circle-fill{% endif %}"></i>
+    </div>
+    <div>
+      <div style="font-weight: 600; margin-bottom: 2px;">Status is Final</div>
+      <div style="color: var(--text-muted); font-size: 0.83rem;">
+        This application is marked <strong style="color: var(--text-main);">{{ application.status }}</strong>
+        and cannot be changed further.
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Delete -->
+  <div class="card-dark p-4" style="border-color: rgba(239,68,68,0.2);">
+    <h6 style="font-weight: 600; color: #FCA5A5; margin-bottom: 4px;"><i class="bi bi-trash me-2"></i>Danger Zone</h6>
+    <p style="color: var(--text-muted); font-size: 0.83rem; margin-bottom: 16px;">
+      Deletes this application from memory permanently (cannot be undone).
+    </p>
+    <form method="POST" action="{% url 'delete' application.id %}"
+          onsubmit="return confirm('Delete application #{{ application.id }} for {{ application.name }}? This cannot be undone.');">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5; border-radius: 8px; padding: 7px 18px; font-weight: 600;">
+        <i class="bi bi-trash me-1"></i>Delete Application
+      </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

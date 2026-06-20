@@ -1,0 +1,102 @@
+{% extends "django_frontend/base.html" %}
+{% block title %}Apply for Internship — InternTrack{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 640px; padding: 60px 16px;">
+
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <div class="glow-ring glow-indigo mx-auto mb-4" style="width:60px;height:60px;font-size:1.6rem;border-radius:18px;">
+      <i class="bi bi-send-fill"></i>
+    </div>
+    <h1 style="font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:2rem; letter-spacing:-0.03em;">
+      Apply for an Internship
+    </h1>
+    <p style="color: var(--text-muted); margin-top: 8px; font-size: 0.95rem;">
+      Fill in your details — the Flask API will handle the rest.
+    </p>
+  </div>
+
+  <!-- Card Form -->
+  <div class="card-dark p-4 p-md-5">
+    <form method="POST" action="{% url 'apply' %}" novalidate>
+      {% csrf_token %}
+
+      <!-- Name -->
+      <div class="mb-4">
+        <label class="form-label"><i class="bi bi-person me-1"></i>Full Name <span style="color:#F87171">*</span></label>
+        <input type="text" name="name" class="form-control form-control-dark"
+               placeholder="e.g. Sawan Kumar"
+               value="{{ form_data.name|default:'' }}" required />
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label class="form-label"><i class="bi bi-envelope me-1"></i>Email Address <span style="color:#F87171">*</span></label>
+        <input type="email" name="email" class="form-control form-control-dark"
+               placeholder="e.g. sawan@college.edu"
+               value="{{ form_data.email|default:'' }}" required />
+      </div>
+
+      <!-- College -->
+      <div class="mb-4">
+        <label class="form-label"><i class="bi bi-building me-1"></i>College / Institution <span style="color:#F87171">*</span></label>
+        <input type="text" name="college" class="form-control form-control-dark"
+               placeholder="e.g. Delhi University"
+               value="{{ form_data.college|default:'' }}" required />
+      </div>
+
+      <!-- Skills -->
+      <div class="mb-4">
+        <label class="form-label"><i class="bi bi-tools me-1"></i>Skills <span style="color:#F87171">*</span></label>
+        <input type="text" name="skills" class="form-control form-control-dark"
+               placeholder="e.g. Python, Django, REST APIs, SQL"
+               value="{{ form_data.skills|default:'' }}" required />
+        <div style="color: var(--text-muted); font-size: 0.78rem; margin-top: 6px;">
+          Separate multiple skills with commas.
+        </div>
+      </div>
+
+      <!-- Role -->
+      <div class="mb-5">
+        <label class="form-label"><i class="bi bi-briefcase me-1"></i>Internship Role <span style="color:#F87171">*</span></label>
+        <select name="role" class="form-control form-select-dark" required>
+          <option value="" disabled {% if not form_data.role %}selected{% endif %}>Select a role…</option>
+          {% for role in roles %}
+            <option value="{{ role }}" {% if form_data.role == role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn btn-brand w-100 py-3" style="font-size: 1rem;">
+        <i class="bi bi-send me-2"></i>Submit Application
+      </button>
+    </form>
+  </div>
+
+  <!-- Architecture Note -->
+  <div class="card-dark-2 mt-4 p-3">
+    <div class="d-flex align-items-start gap-3">
+      <div class="glow-ring glow-cyan" style="width:38px;height:38px;font-size:1rem;flex-shrink:0">
+        <i class="bi bi-info-circle"></i>
+      </div>
+      <div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+          <strong style="color: var(--text-main);">How this works:</strong>
+          Django collects your form data → sends a <code style="color: var(--brand-accent);">POST /apply</code>
+          request to the Flask API → Flask validates &amp; stores it in a Python list → Django
+          redirects you to the Dashboard.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  select.form-select-dark { appearance: none; cursor: pointer; }
+</style>
+{% endblock %}

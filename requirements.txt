@@ -1,0 +1,14 @@
+# ── Internship Application Tracker ──────────────────────────────────────────
+# Install with:  pip install -r requirements.txt
+
+# Django — Frontend layer (UI, forms, sessions)
+Django==5.0.6
+
+# Flask — Backend API layer (business logic, in-memory storage)
+Flask==3.0.3
+
+# HTTP client — Django talks to Flask via REST
+requests==2.32.3
+
+# Optional: nicer dev experience
+Werkzeug==3.0.3
